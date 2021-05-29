@@ -1,7 +1,17 @@
 library(rpart)       # performing regression trees
 library(rpart.plot)  # plotting regression trees
 library(caret)
-library(sample)
+source("init.R")
+
+apply_custom_method = FALSE
+meth = as.null()
+
+if (apply_custom_method == TRUE) {
+  meth = list(eval = etemp, split = stemp, init = itemp)
+} else {
+  meth = "anova"
+}
+
 
 folds = 5
 ntrees = 300
@@ -26,7 +36,7 @@ for (i in 0:(folds-1)) {
     model <- rpart(
       formula = Sale_Price ~ .,
       data    = single_tree_train,
-      method  = "anova"
+      method  = meth
     )
     tree_pred = predict(model, validation)
     if (is.null(forest_pred)) {
@@ -42,5 +52,8 @@ for (i in 0:(folds-1)) {
   } else {
     diff_pred = rbind(diff_pred,(validation['Sale_Price'] - forest_pred)^2)
   }
+  print(j)
 }
 summary(diff_pred)
+
+

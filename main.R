@@ -1,7 +1,10 @@
 library(rsample)      # data splitting 
 library(randomForest) # basic implementation
 library(caret)
+
+
 folds = 5
+
 
 data_set = AmesHousing::make_ames()
 interval = nrow(data_set)/folds
